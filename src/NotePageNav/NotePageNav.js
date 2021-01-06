@@ -1,9 +1,6 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CircleButton from '../CircleButton/CircleButton'
 import ApiContext from '../ApiContext'
-import PropTypes from 'prop-types'
-
 import { findNote, findFolder } from '../notes-helpers'
 import './NotePageNav.css'
 
@@ -16,20 +13,6 @@ export default class NotePageNav extends React.Component {
       params: {}
     }
   }
-
-static propTypes = {
-  onClick: PropTypes.func,
-    folder: PropTypes.shape({
-      name: PropTypes.string.isRequired
-    }),
-    note: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-      name: PropTypes.string.isRequired,
-      content: PropTypes.string.isRequired,
-      modified: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    })
-  }
-
   static contextType = ApiContext;
 
   render() {
@@ -45,7 +28,6 @@ static propTypes = {
           onClick={() => this.props.history.goBack()}
           className='NotePageNav__back-button'
         >
-          <FontAwesomeIcon icon='chevron-left' />
           <br />
           Back
         </CircleButton>

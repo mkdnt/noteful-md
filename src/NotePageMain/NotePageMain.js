@@ -1,7 +1,6 @@
 import React from 'react'
 import Note from '../Note/Note'
 import ApiContext from '../ApiContext'
-import PropTypes from 'prop-types'
 import { findNote } from '../notes-helpers'
 import './NotePageMain.css'
 
@@ -11,17 +10,6 @@ export default class NotePageMain extends React.Component {
       params: {}
     }
   }
-
-  static propTypes = {
-    note: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-      name: PropTypes.string.isRequired,
-      content: PropTypes.string.isRequired,
-      modified: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      onDeleteNote: PropTypes.func
-    })
-  }
-
   static contextType = ApiContext
 
   handleDeleteNote = noteId => {
@@ -31,13 +19,13 @@ export default class NotePageMain extends React.Component {
   render() {
     const { notes=[] } = this.context
     const { noteId } = this.props.match.params
-    const note = findNote(notes, noteId) || { content: '' }
+    const note = findNote(notes, parseInt(noteId)) || { content: '' }
     return (
       <section className='NotePageMain'>
         <Note
           id={note.id}
-          name={note.name}
-          modified={note.modified}
+          title={note.title}
+          date_published={note.date_published}
           onDeleteNote={this.handleDeleteNote}
         />
         <div className='NotePageMain__content'>

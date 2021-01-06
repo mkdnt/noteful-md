@@ -1,10 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Note from '../Note/Note'
 import CircleButton from '../CircleButton/CircleButton'
 import ApiContext from '../ApiContext'
-import PropTypes from 'prop-types'
 import { getNotesForFolder } from '../notes-helpers'
 import './NoteListMain.css'
 
@@ -14,22 +12,13 @@ export default class NoteListMain extends React.Component {
       params: {}
     }
   }
-
-  static propTypes = {
-    note: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-      name: PropTypes.string.isRequired,
-      content: PropTypes.string.isRequired,
-      modified: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      onDeleteNote: PropTypes.func
-    })
-  }
   static contextType = ApiContext
 
   render() {
     const { folderId } = this.props.match.params
     const { notes=[] } = this.context
-    const notesForFolder = getNotesForFolder(notes, folderId)
+    console.log(notes)
+    const notesForFolder = getNotesForFolder(notes, parseInt(folderId))
     return (
       <section className='NoteListMain'>
         <ul>
@@ -37,8 +26,8 @@ export default class NoteListMain extends React.Component {
             <li key={note.id}>
               <Note
                 id={note.id}
-                name={note.name}
-                modified={note.modified}
+                title={note.title}
+                date_published={note.date_published}
               />
             </li>
           )}
@@ -50,7 +39,6 @@ export default class NoteListMain extends React.Component {
             type='button'
             className='NoteListMain__add-note-button'
           >
-            <FontAwesomeIcon icon='plus' />
             <br />
             Note
           </CircleButton>
