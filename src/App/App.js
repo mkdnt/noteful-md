@@ -88,7 +88,6 @@ class App extends Component {
       addNote: this.handleAddNote,
       deleteNote: this.handleDeleteNote,
     };
-    console.log(value);
     return (
       <ApiContext.Provider value={value}>
         <div className="App">

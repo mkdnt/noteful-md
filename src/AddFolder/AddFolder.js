@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import NotefulForm from '../NotefulForm/NotefulForm'
 import ApiContext from '../ApiContext'
 import config from '../config'
+import ValidationError from '../ValidationError'
 import './AddFolder.css'
 
 export default class AddFolder extends Component {
@@ -38,6 +39,19 @@ export default class AddFolder extends Component {
       })
   }
 
+  updateFolderName(name) {
+  this.setState({folderName: {value: name, touched: false}})
+    }
+
+  validateFolderName(){
+    const folderName = this.state.folderName.value.trim();
+      if (folderName.length === 0) {
+        return "Name is required";
+      } else if (folderName.length < 3) {
+        return "Name must be at least 3 characters long";
+      }
+  }
+
   render() {
     return (
       <section className='AddFolder'>
@@ -47,10 +61,16 @@ export default class AddFolder extends Component {
             <label htmlFor='folder-name-input'>
               Name
             </label>
-            <input type='text' id='folder-name-input' name='folder-name' />
+            <input 
+            type='text' 
+            id='folder-name-input' 
+            name='folder-name' 
+            onChange = {e=> this.updateFolderName(e.target.value)}/>
+            {this.state.folderName.touched && <ValidationError message={this.validateFolderName} />}
           </div>
           <div className='buttons'>
-            <button type='submit'>
+            <button type='submit'
+            disabled= {this.validateFolderName()}>
               Add folder
             </button>
           </div>

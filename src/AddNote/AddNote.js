@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import NotefulForm from '../NotefulForm/NotefulForm'
 import ApiContext from '../ApiContext'
 import config from '../config'
+import ValidationError from '../ValidationError'
 import './AddNote.css'
 
 export default class AddNote extends Component {
@@ -11,6 +12,20 @@ export default class AddNote extends Component {
     },
   }
   static contextType = ApiContext;
+
+  updateNoteName(name) {
+  this.setState({noteName: {value: name, touched: true}})
+  }
+
+  validateNoteName(){
+    const noteName = this.state.noteName.value.trim();
+      if (noteName.length === 0) {
+        return "Name is required";
+      } else if (noteName.length < 3) {
+        return "Name must be at least 3 characters long";
+      }
+  }
+
 
   handleSubmit = e => {
     e.preventDefault()
@@ -43,7 +58,6 @@ export default class AddNote extends Component {
 
   render() {
     const { folders=[] } = this.context
-    console.log(folders)
     return (
       <section className='AddNote'>
         <h2>Create a note</h2>
@@ -52,7 +66,11 @@ export default class AddNote extends Component {
             <label htmlFor='note-name-input'>
               Name
             </label>
-            <input type='text' id='note-name-input' name='note-name' />
+            <input type='text' 
+            id='note-name-input' 
+            name='note-name' 
+            onChange = {e=> this.updateNoteName(e.target.value)}/>
+            <ValidationError message={this.validateNoteName} />
           </div>
           <div className='field'>
             <label htmlFor='note-content-input'>
@@ -74,7 +92,8 @@ export default class AddNote extends Component {
             </select>
           </div>
           <div className='buttons'>
-            <button type='submit'>
+            <button type='submit'
+            disabled= {this.validateNoteName}>
               Add note
             </button>
           </div>
